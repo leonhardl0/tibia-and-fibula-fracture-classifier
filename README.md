@@ -43,7 +43,7 @@ tibia_and_fibula_fracture/
 - Avaliação da acurácia e perda
 - Predição de imagens externas para teste
 
-## Como usar
+## Como Usar
 
 1. Clone o repositório:
 
