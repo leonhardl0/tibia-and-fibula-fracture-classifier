@@ -25,7 +25,7 @@ def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste
 
         for caminho_img in caminhos_imagens:
             try:
-                img = Image.open(caminho_img).convert('L')  # Escala de cinza
+                img = Image.open(caminho_img).convert('L')  # escala de cinza
                 img = img.resize(tamanho_img)
                 imagens.append(np.array(img))
                 labels.append(nome_classe)
@@ -136,17 +136,17 @@ label_encoder_global = None
 def main():
     global label_encoder_global
 
-    # --- Configurações do Dataset ---
+    # --- configurações do dataset ---
     pasta_base_dataset = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture"
     dimensoes_imagens = (64, 64)
     proporcao_teste = 0.2
     semente_aleatoria = 42
 
-    # --- Configurações do Treinamento ---
+    # --- configurações do treinamento ---
     epocas_treino = 5
     tamanho_lote_treino = 32
 
-    # --- ETAPA 1: Carregar e Dividir o Dataset ---
+    # --- etapa 1: carregar e dividir o dataset ---
     print("\n--- ETAPA 1: Carregando e Dividindo o Dataset ---")
     X_treino, X_teste, y_treino, y_teste = carregar_e_dividir_dataset(
         pasta_base_dataset,
@@ -159,18 +159,18 @@ def main():
         print("Não há dados suficientes para prosseguir com o treinamento. Encerrando.")
         return
 
-    # --- ETAPA 2: Pré-processar os Dados ---
+    # --- etapa 2: pré-processar os dados ---
     print("\n--- ETAPA 2: Pré-processando os Dados ---")
     X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot, \
         label_encoder_global, num_classes, input_shape = pre_processar_dados(
         X_treino, X_teste, y_treino, y_teste, dimensoes_imagens
     )
 
-    # --- ETAPA 3: Construir o Modelo CNN ---
+    # --- etapa 3: construir o modelo CNN ---
     print("\n--- ETAPA 3: Construindo o Modelo CNN ---")
     modelo_cnn = construir_modelo_cnn(input_shape, num_classes)
 
-    # --- ETAPA 4: Treinar o Modelo ---
+    # --- etapa 4: treinar o modelo ---
     print("\n--- ETAPA 4: Treinando o Modelo ---")
     treinar_modelo(
         modelo_cnn,
@@ -179,11 +179,11 @@ def main():
         epocas_treino, tamanho_lote_treino
     )
 
-    # --- ETAPA 5: Avaliar e Salvar o Modelo ---
+    # --- etapa 5: avaliar e salvar o modelo ---
     print("\n--- ETAPA 5: Avaliando e Salvando o Modelo ---")
     avaliar(modelo_cnn, X_teste_proc, y_teste_one_hot)
 
-    # --- Exemplo de uso da função de predição ---
+    # --- exemplo de usa da função de predição ---
     print("\n--- Exemplo de Predição de uma Nova Imagem ---")
     caminho_imagem_teste = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture\\fracture\\0.png"  # Exemplo de imagem
 
