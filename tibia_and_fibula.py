@@ -25,7 +25,7 @@ def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste
 
         for caminho_img in caminhos_imagens:
             try:
-                img = Image.open(caminho_img).convert('L')  # escala de cinza
+                img = Image.open(caminho_img).convert('L')
                 img = img.resize(tamanho_img)
                 imagens.append(np.array(img))
                 labels.append(nome_classe)
@@ -98,7 +98,7 @@ def treinar_modelo(modelo, X_treino, y_treino_one_hot, X_teste, y_teste_one_hot,
         epochs=epocas,
         batch_size=tamanho_lote,
         validation_data=(X_teste, y_teste_one_hot),
-        verbose=1  # Exibe o progresso no console
+        verbose=1
     )
     return historico
 
