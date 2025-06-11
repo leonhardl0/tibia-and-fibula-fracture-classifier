@@ -183,7 +183,7 @@ def main():
     print("\n--- ETAPA 5: Avaliando e Salvando o Modelo ---")
     avaliar(modelo_cnn, X_teste_proc, y_teste_one_hot)
 
-    # --- exemplo de usa da função de predição ---
+    # --- exemplo de uso da função de predição ---
     print("\n--- Exemplo de Predição de uma Nova Imagem ---")
     caminho_imagem_teste = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture\\fracture\\0.png"  # Exemplo de imagem
 
