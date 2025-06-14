@@ -43,6 +43,11 @@ from tensorflow.keras.models import load_model
 modelo = load_model('modelo_tibia.keras')
 ```
 
+## Validação de Imagens
+
+O código possui um validador interno que verifica se a imagem fornecida parece ser um raio-X da tíbia ou fíbula antes de realizar a classificação.  
+Essa verificação é feita com base na **média e no desvio padrão dos pixels** da imagem para evitar classificações incorretas de imagens irrelevantes.
+
 ## Requisitos
 
 - Python 3.8+
