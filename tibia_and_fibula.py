@@ -132,7 +132,7 @@ label_encoder_global = None
 def main():
     global label_encoder_global
 
-    pasta_base_dataset = "C:/Users/Leo/Downloads/tibia-and-fibula-fracture-classifier-main"
+    pasta_base_dataset = "C:/Users/leo/Downloads/tibia-and-fibula-fracture-classifier-main"
     dimensoes_imagens = (64, 64)
     proporcao_teste = 0.2
     semente_aleatoria = 42
