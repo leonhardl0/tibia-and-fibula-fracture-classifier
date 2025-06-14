@@ -43,10 +43,29 @@ from tensorflow.keras.models import load_model
 modelo = load_model('modelo_tibia.keras')
 ```
 
-## Validação de Imagens
+## Validação de Imagens (com verificação estatística)
 
-O código possui um validador interno que verifica se a imagem fornecida parece ser um raio-X da tíbia ou fíbula antes de realizar a classificação.  
-Essa verificação é feita com base na **média e no desvio padrão dos pixels** da imagem para evitar classificações incorretas de imagens irrelevantes.
+O código inclui uma etapa de **validação prévia à classificação**, que tem como objetivo garantir que apenas imagens compatíveis com o domínio de treinamento (radiografias da tíbia ou fíbula) sejam processadas pelo modelo.
+
+Essa validação é feita com base em **estatísticas de distribuição dos pixels** da imagem:
+
+- **Média dos pixels**: espera-se que uma imagem de raio-X tenha valores médios intermediários (nem escura demais nem muito clara), indicando presença de contraste.
+- **Desvio padrão dos pixels**: imagens válidas devem apresentar variação tonal suficiente para conter estruturas ósseas visíveis.
+
+O critério implementado no código verifica se a imagem atende aos seguintes limites heurísticos:
+
+```python
+30 < média < 200
+desvio padrão > 20
+```
+
+Se a imagem não satisfizer essas condições, ela é rejeitada com a seguinte mensagem:
+
+```
+Imagem rejeitada: não parece ser um raio-X da tíbia ou fíbula.
+```
+
+Esse mecanismo evita que imagens irrelevantes (fotos pessoais, imagens corrompidas, capturas de tela etc.) sejam processadas indevidamente pelo classificador, reduzindo o risco de inferências sem sentido e aumentando a robustez geral do sistema.
 
 ## Requisitos
 
