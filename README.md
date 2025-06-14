@@ -92,8 +92,10 @@ tibia_and_fibula_fracture/
 - Se quiser treinar do zero, ajuste os scripts para carregar os dados e treinar novamente.
 - O dataset original possui imagens divididas por fraturas/not-fraturas em subpastas.
 
+## Fins Educacionais
+
+Este projeto foi desenvolvido exclusivamente para fins educacionais e de aprendizado. Não deve ser utilizado para diagnósticos médicos reais ou aplicações clínicas.
+
 ## Licença
 
 Verifique os termos de uso do dataset no [Kaggle](https://www.kaggle.com/datasets/orvile/bone-fracture-dataset) e adapte sua licença de projeto conforme necessário.
-
-
