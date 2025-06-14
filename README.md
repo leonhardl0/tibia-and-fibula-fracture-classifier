@@ -1,4 +1,4 @@
-Classificador de Fraturas na Tíbia e Fíbula
+## Classificador de Fraturas na Tíbia e Fíbula
 
 Este projeto utiliza um modelo de aprendizado de máquina para classificar fraturas na tíbia e fíbula a partir de imagens médicas.
 
