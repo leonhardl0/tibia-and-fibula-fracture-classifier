@@ -35,7 +35,7 @@ from tensorflow.keras.models import load_model
 modelo = load_model('modelo_tibia.keras')
 ```
 
-## 🛠️ Requisitos
+## Requisitos
 
 - Python 3.8+
 - TensorFlow / Keras
