@@ -80,7 +80,7 @@ python modelo_tibia_atualizado.py
 
 ---
 
-## 📷 Como Fazer Predições
+## Como Fazer Predições
 
 Após o treinamento, o modelo será salvo como `modelo_tibia.keras`.  
 Para fazer previsões com imagens externas, adicione um trecho como este ao seu código:
