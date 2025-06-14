@@ -62,7 +62,15 @@ def pre_processar_dados(X_treino, X_teste, y_treino, y_teste, dimensoes_img):
 
     input_shape = (dimensoes_img[1], dimensoes_img[0], 1)
 
-    return X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot,         encoder_labels, num_classes, input_shape
+    return (
+        X_treino_proc,
+        X_teste_proc,
+        y_treino_one_hot,
+        y_teste_one_hot,
+        encoder_labels,
+        num_classes,
+        input_shape
+    )
 
 def construir_modelo_cnn(input_shape, num_classes):
     model = Sequential([
@@ -152,7 +160,7 @@ def main():
         return
 
     print("\n--- ETAPA 2: Pré-processando os Dados ---")
-    X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot,         label_encoder_global, num_classes, input_shape = pre_processar_dados(
+    X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot, label_encoder_global, num_classes, input_shape = pre_processar_dados(
         X_treino, X_teste, y_treino, y_teste, dimensoes_imagens
     )
 
