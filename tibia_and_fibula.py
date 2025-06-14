@@ -1,3 +1,4 @@
+# tibia_and_fibula.py
 import os
 import glob
 from PIL import Image
@@ -8,13 +9,11 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-
 def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste=0.2, semente_aleatoria=42):
     imagens = []
     labels = []
 
     classes = sorted([d for d in os.listdir(pasta_base) if os.path.isdir(os.path.join(pasta_base, d))])
-
     print(f"Classes encontradas: {classes}")
 
     for nome_classe in classes:
@@ -25,7 +24,7 @@ def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste
 
         for caminho_img in caminhos_imagens:
             try:
-                img = Image.open(caminho_img).convert('L')
+                img = Image.open(caminho_img).convert('L')  # Escala de cinza
                 img = img.resize(tamanho_img)
                 imagens.append(np.array(img))
                 labels.append(nome_classe)
@@ -45,7 +44,6 @@ def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste
     return X_treino, X_teste, y_treino, y_teste
 
 def pre_processar_dados(X_treino, X_teste, y_treino, y_teste, dimensoes_img):
-
     X_treino_proc = X_treino.astype('float32') / 255.0
     X_teste_proc = X_teste.astype('float32') / 255.0
 
@@ -65,31 +63,24 @@ def pre_processar_dados(X_treino, X_teste, y_treino, y_teste, dimensoes_img):
 
     input_shape = (dimensoes_img[1], dimensoes_img[0], 1)
 
-    return X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot, \
-        encoder_labels, num_classes, input_shape
+    return X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot,         encoder_labels, num_classes, input_shape
 
 def construir_modelo_cnn(input_shape, num_classes):
     model = Sequential([
         Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
         MaxPooling2D((2, 2)),
-
         Conv2D(64, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
-
         Conv2D(128, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
-
         Flatten(),
         Dense(128, activation='relu'),
         Dropout(0.5),
-
         Dense(num_classes, activation='softmax')
     ])
-
     model.compile(optimizer='adam',
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
-
     return model
 
 def treinar_modelo(modelo, X_treino, y_treino_one_hot, X_teste, y_teste_one_hot, epocas=20, tamanho_lote=32):
@@ -108,27 +99,33 @@ def avaliar(modelo, X_teste, y_teste_one_hot):
     print(f"Perda final no conjunto de teste: {perda:.4f}")
     print(f"Acurácia final no conjunto de teste: {acuracia:.4f}")
 
+def imagem_parece_raiox_medico(img_array):
+    media = np.mean(img_array)
+    desvio = np.std(img_array)
+    return 30 < media < 200 and desvio > 20
+
 def prever_imagem(caminho_imagem, modelo, label_encoder, tamanho_img=(64, 64)):
     try:
         img = Image.open(caminho_imagem).convert('L')
         img = img.resize(tamanho_img)
-        img_array = np.array(img).astype('float32') / 255.0
+        img_array = np.array(img).astype('float32')
 
+        if not imagem_parece_raiox_medico(img_array):
+            print("Imagem rejeitada: não parece ser um raio-X da tíbia ou fíbula.")
+            return "Imagem não reconhecida como raio-X da tíbia/fíbula", None
+
+        img_array /= 255.0
         img_array = np.expand_dims(img_array, axis=0)
         img_array = np.expand_dims(img_array, axis=-1)
 
         predicoes = modelo.predict(img_array)
         indice_classe_predita = np.argmax(predicoes, axis=1)[0]
-
         classe_predita = label_encoder.inverse_transform([indice_classe_predita])[0]
 
         return classe_predita, predicoes[0]
 
-    except FileNotFoundError:
-        print(f"Erro: Imagem não encontrada no caminho '{caminho_imagem}'")
-        return None, None
     except Exception as e:
-        print(f"Erro ao processar a imagem '{caminho_imagem}': {e}")
+        print(f"Erro ao processar a imagem: {e}")
         return None, None
 
 label_encoder_global = None
@@ -136,17 +133,13 @@ label_encoder_global = None
 def main():
     global label_encoder_global
 
-    # --- configurações do dataset ---
     pasta_base_dataset = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture"
     dimensoes_imagens = (64, 64)
     proporcao_teste = 0.2
     semente_aleatoria = 42
-
-    # --- configurações do treinamento ---
     epocas_treino = 5
     tamanho_lote_treino = 32
 
-    # --- etapa 1: carregar e dividir o dataset ---
     print("\n--- ETAPA 1: Carregando e Dividindo o Dataset ---")
     X_treino, X_teste, y_treino, y_teste = carregar_e_dividir_dataset(
         pasta_base_dataset,
@@ -159,18 +152,14 @@ def main():
         print("Não há dados suficientes para prosseguir com o treinamento. Encerrando.")
         return
 
-    # --- etapa 2: pré-processar os dados ---
     print("\n--- ETAPA 2: Pré-processando os Dados ---")
-    X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot, \
-        label_encoder_global, num_classes, input_shape = pre_processar_dados(
+    X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot,         label_encoder_global, num_classes, input_shape = pre_processar_dados(
         X_treino, X_teste, y_treino, y_teste, dimensoes_imagens
     )
 
-    # --- etapa 3: construir o modelo CNN ---
     print("\n--- ETAPA 3: Construindo o Modelo CNN ---")
     modelo_cnn = construir_modelo_cnn(input_shape, num_classes)
 
-    # --- etapa 4: treinar o modelo ---
     print("\n--- ETAPA 4: Treinando o Modelo ---")
     treinar_modelo(
         modelo_cnn,
@@ -179,17 +168,11 @@ def main():
         epocas_treino, tamanho_lote_treino
     )
 
-    # --- etapa 5: avaliar e salvar o modelo ---
     print("\n--- ETAPA 5: Avaliando e Salvando o Modelo ---")
     avaliar(modelo_cnn, X_teste_proc, y_teste_one_hot)
 
-    # --- exemplo de uso da função de predição ---
-    print("\n--- Exemplo de Predição de uma Nova Imagem ---")
-    caminho_imagem_teste = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture\\fracture\\0.png"  # Exemplo de imagem
-
-    classe_predita, probabilidades = prever_imagem(caminho_imagem_teste, modelo_cnn, label_encoder_global, dimensoes_imagens)
-    print(f"A imagem '{os.path.basename(caminho_imagem_teste)}' foi classificada como: **{classe_predita}**")
-    print("Probabilidades por classe:")
+    modelo_cnn.save("modelo_tibia.keras")
+    print("Modelo salvo como 'modelo_tibia.keras'")
 
 if __name__ == "__main__":
     main()
