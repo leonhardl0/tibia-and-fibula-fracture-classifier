@@ -1,4 +1,3 @@
-# tibia_and_fibula.py
 import os
 import glob
 from PIL import Image
@@ -24,7 +23,7 @@ def carregar_e_dividir_dataset(pasta_base, tamanho_img=(64, 64), proporcao_teste
 
         for caminho_img in caminhos_imagens:
             try:
-                img = Image.open(caminho_img).convert('L')  # Escala de cinza
+                img = Image.open(caminho_img).convert('L')
                 img = img.resize(tamanho_img)
                 imagens.append(np.array(img))
                 labels.append(nome_classe)
@@ -133,7 +132,7 @@ label_encoder_global = None
 def main():
     global label_encoder_global
 
-    pasta_base_dataset = "C:/Users/Leo/Downloads/tibia_and_fibula_fracture"
+    pasta_base_dataset = "C:/Users/Leo/Downloads/tibia-and-fibula-fracture-classifier-main"
     dimensoes_imagens = (64, 64)
     proporcao_teste = 0.2
     semente_aleatoria = 42
