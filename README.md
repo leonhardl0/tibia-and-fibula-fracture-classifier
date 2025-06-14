@@ -21,6 +21,14 @@ kaggle datasets download -d orvile/bone-fracture-dataset
 unzip bone-fracture-dataset.zip -d data/
 ```
 
+> ⚠️ **Importante:** No código-fonte (por exemplo, no arquivo `main.py` ou `tibia_and_fibula.py`), há uma variável chamada `pasta_base_dataset`. Você deve alterar seu valor para o caminho correto onde o dataset foi salvo no seu computador. Exemplo:
+>
+> ```python
+> pasta_base_dataset = "C:/seu/caminho/para/o/dataset"
+> ```
+>
+> Caso contrário, o código não conseguirá localizar as imagens e irá falhar.
+
 ## Modelo Pré-Treinado
 
 Para utilizar diretamente o classificador (sem re-treinamento), você precisa do arquivo:
@@ -52,7 +60,7 @@ pip install -r requirements.txt
 
 ## Execução
 
-1. Certifique-se de que os dados estão em `./data`
+1. Certifique-se de que os dados estão em `./data` ou no caminho ajustado corretamente
 2. Verifique se `modelo_tibia.keras` está na raiz do projeto
 3. Execute o script ou notebook principal:
 
