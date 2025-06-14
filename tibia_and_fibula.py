@@ -140,46 +140,5 @@ label_encoder_global = None
 def main():
     global label_encoder_global
 
-    pasta_base_dataset = "C:/Users/leo/Downloads/tibia-and-fibula-fracture-classifier-main"
-    dimensoes_imagens = (64, 64)
-    proporcao_teste = 0.2
-    semente_aleatoria = 42
-    epocas_treino = 5
-    tamanho_lote_treino = 32
-
-    print("\n--- ETAPA 1: Carregando e Dividindo o Dataset ---")
-    X_treino, X_teste, y_treino, y_teste = carregar_e_dividir_dataset(
-        pasta_base_dataset,
-        dimensoes_imagens,
-        proporcao_teste,
-        semente_aleatoria
-    )
-
-    if len(X_treino) == 0 or len(X_teste) == 0:
-        print("Não há dados suficientes para prosseguir com o treinamento. Encerrando.")
-        return
-
-    print("\n--- ETAPA 2: Pré-processando os Dados ---")
-    X_treino_proc, X_teste_proc, y_treino_one_hot, y_teste_one_hot, label_encoder_global, num_classes, input_shape = pre_processar_dados(
-        X_treino, X_teste, y_treino, y_teste, dimensoes_imagens
-    )
-
-    print("\n--- ETAPA 3: Construindo o Modelo CNN ---")
-    modelo_cnn = construir_modelo_cnn(input_shape, num_classes)
-
-    print("\n--- ETAPA 4: Treinando o Modelo ---")
-    treinar_modelo(
-        modelo_cnn,
-        X_treino_proc, y_treino_one_hot,
-        X_teste_proc, y_teste_one_hot,
-        epocas_treino, tamanho_lote_treino
-    )
-
-    print("\n--- ETAPA 5: Avaliando e Salvando o Modelo ---")
-    avaliar(modelo_cnn, X_teste_proc, y_teste_one_hot)
-
-    modelo_cnn.save("modelo_tibia.keras")
-    print("Modelo salvo como 'modelo_tibia.keras'")
-
-if __name__ == "__main__":
-    main()
+    pasta_base_dataset = "CAMINHO/DO/SEU/DATASET"
+    # exemplo: "C:/Users/seu_nome/Downloads/tibia-and-fibula-fracture-classifier-main"
