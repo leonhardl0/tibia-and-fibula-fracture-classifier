@@ -106,6 +106,7 @@ def avaliar(modelo, X_teste, y_teste_one_hot):
     print(f"Perda final no conjunto de teste: {perda:.4f}")
     print(f"Acurácia final no conjunto de teste: {acuracia:.4f}")
 
+# validador de imagem: verifica se a imagem parece ser um raio-X da tíbia ou fíbula
 def imagem_parece_raiox_medico(img_array):
     media = np.mean(img_array)
     desvio = np.std(img_array)
