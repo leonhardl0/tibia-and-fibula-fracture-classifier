@@ -69,7 +69,7 @@ As dependências incluem:
 1.  Baixe os datasets e organize as imagens em um diretório base, com subpastas para cada classe (ex: `Fractured/`, `Not Fractured/`, `Others/`).
 2.  Abra o arquivo `tibia_and_fibula.py` e **altere o valor da variável `pasta_base_dataset`** para o caminho do diretório onde você salvou o dataset.
     ```python
-    # Altere esta linha para o caminho do seu dataset
+    # altere essa linha para o caminho do seu dataset
     pasta_base_dataset = "caminho/do/seu/dataset" # <-- mude aqui
     ```
 3.  Execute o script de treinamento no terminal:
