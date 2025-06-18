@@ -1,125 +1,82 @@
 # Classificador de Fraturas na Tíbia e Fíbula
 
-Este projeto implementa um classificador de imagens para detectar fraturas na tíbia e fíbula usando redes neurais com Keras/TensorFlow.
+Este projeto utiliza uma Rede Neural Convolucional (CNN) para classificar imagens de raios-X, identificando a presença de fraturas na tíbia e fíbula. O modelo é capaz de distinguir entre três categorias: imagens com fratura, sem fratura e imagens que não são raios-X relevantes.
 
-## Visão Geral
+O projeto inclui scripts para treinar o modelo do zero (`tibia_and_fibula.py`) e para classificar uma nova imagem utilizando um modelo pré-treinado (`classificar_imagem.py`).
 
-O objetivo deste projeto é treinar e utilizar um modelo de aprendizado profundo para identificar automaticamente fraturas em imagens médicas da tíbia e fíbula. Ele é baseado no dataset de raio-X disponível no Kaggle.
+## Dataset de Treinamento
 
-## Dataset
+O modelo `modelo_tibia.keras` incluso neste repositório foi treinado com uma combinação de datasets para alcançar um desempenho robusto e preciso.
 
-Para executar este projeto, é necessário baixar o dataset de imagens:
+* **Classes `Fractured` e `Not Fractured`**:
+    * **Fonte**: [Bone Fracture Dataset no Kaggle](https://www.kaggle.com/datasets/orvile/bone-fracture-dataset)
+    * **Imagens Utilizadas**: 2.127 imagens, divididas em:
+        * 2.000 imagens para a classe `Fractured`.
+        * 127 imagens para a classe `Not Fractured`.
 
-- **Kaggle Dataset**: [Bone Fracture Dataset](https://www.kaggle.com/datasets/orvile/bone-fracture-dataset)
+* **Classe `Others`**:
+    * **Fonte**: [Imagenette e Imagewoof](https://github.com/fastai/imagenette)
+    * **Imagens Utilizadas**: Cerca de 2.127 imagens (em resolução de 320px) foram usadas para ensinar o modelo a identificar e rejeitar imagens que não correspondem ao domínio de interesse (raios-X de ossos).
 
-Após o download, extraia os arquivos e coloque-os em um diretório chamado `data/` na raiz do projeto (ou ajuste o caminho no script conforme necessário).
+## Funcionalidades
 
-Você pode baixar via terminal (com a [Kaggle API](https://github.com/Kaggle/kaggle-api)):
+### Treinamento do Modelo (`tibia_and_fibula.py`)
 
-```bash
-kaggle datasets download -d orvile/bone-fracture-dataset
-unzip bone-fracture-dataset.zip -d data/
-```
+* **Carregamento de Dados**: Carrega imagens nos formatos `.png`, `.jpeg` e `.jpg` a partir de um diretório base.
+* **Pré-processamento**: As imagens são convertidas para escala de cinza e redimensionadas para 64x64 pixels. Os valores dos pixels são normalizados para o intervalo [0, 1].
+* **Arquitetura do Modelo**: Uma Rede Neural Convolucional sequencial é construída com camadas de `Conv2D`, `MaxPooling2D`, `Flatten`, `Dense` e `Dropout` para regularização.
+* **Salvamento**: Após o treinamento, o modelo final é salvo como `modelo_tibia.keras` no diretório do projeto.
 
-> ⚠️ **Importante:** No código-fonte (por exemplo, no arquivo `main.py` ou `tibia_and_fibula.py`), há uma variável chamada `pasta_base_dataset`. Você deve alterar seu valor para o caminho correto onde o dataset foi salvo no seu computador. Exemplo:
->
-> ```python
-> pasta_base_dataset = "C:/seu/caminho/para/o/dataset"
-> ```
->
-> Caso contrário, o código não conseguirá localizar as imagens e irá falhar.
+### Classificação de Imagem (`classificar_imagem.py`)
 
-## Modelo Pré-Treinado
-
-Para utilizar diretamente o classificador (sem re-treinamento), você precisa do arquivo:
-
-- `modelo_tibia.keras` (incluso neste repositório)
-
-Esse é o modelo treinado com os dados acima e pronto para fazer previsões.
-
-```python
-from tensorflow.keras.models import load_model
-
-modelo = load_model('modelo_tibia.keras')
-```
-
-## Validação de Imagens (com verificação estatística)
-
-O código inclui uma etapa de **validação prévia à classificação**, que tem como objetivo garantir que apenas imagens compatíveis com o domínio de treinamento (radiografias da tíbia ou fíbula) sejam processadas pelo modelo.
-
-Essa validação é feita com base em **estatísticas de distribuição dos pixels** da imagem:
-
-- **Média dos pixels**: espera-se que uma imagem de raio-X tenha valores médios intermediários (nem escura demais nem muito clara), indicando presença de contraste.
-- **Desvio padrão dos pixels**: imagens válidas devem apresentar variação tonal suficiente para conter estruturas ósseas visíveis.
-
-O critério implementado no código verifica se a imagem atende aos seguintes limites heurísticos:
-
-```python
-30 < média < 200
-desvio padrão > 20
-```
-
-Se a imagem não satisfizer essas condições, ela é rejeitada com a seguinte mensagem:
-
-```
-Imagem rejeitada: não parece ser um raio-X da tíbia ou fíbula.
-```
-
-Esse mecanismo evita que imagens irrelevantes (fotos pessoais, imagens corrompidas, capturas de tela etc.) sejam processadas indevidamente pelo classificador, reduzindo o risco de inferências sem sentido e aumentando a robustez geral do sistema.
+* **Carregamento do Modelo**: Carrega o modelo `modelo_tibia.keras` para realizar predições.
+* **Predição**: Classifica uma imagem fornecida em uma das três categorias: `Fractured`, `Not Fractured`, ou `Others`.
+* **Validação**: Se a imagem for classificada como `Others`, o script informa que a imagem foi rejeitada por não ser um raio-X.
 
 ## Requisitos
 
-- Python 3.8+
-- TensorFlow / Keras
-- NumPy
-- Matplotlib
-- OpenCV (se estiver usando pré-processamento de imagem)
-- Jupyter Notebook (opcional, mas recomendado)
-
-Instale os pacotes com:
+Para executar este projeto, instale as dependências listadas no arquivo `requirements.txt`.
 
 ```bash
 pip install -r requirements.txt
 ```
+As dependências incluem:
+* tensorflow==2.15.0
+* numpy==1.24.3
+* pillow==10.2.0
+* scikit-learn==1.3.0
+* kaggle==1.6.12
 
-## Execução
+## Como Utilizar
 
-1. Certifique-se de que os dados estão em `./data` ou no caminho ajustado corretamente
-2. Verifique se `modelo_tibia.keras` está na raiz do projeto
-3. Execute o script ou notebook principal:
+⚠️ **Importante**: Para que os scripts funcionem corretamente, você deve ajustar os caminhos dos arquivos para que correspondam à localização no seu computador.
 
-```bash
-python main.py
-```
+### 1. Para Classificar uma Imagem (usando o modelo pré-treinado)
 
-Ou, se for um notebook:
+1.  Certifique-se de que o modelo `modelo_tibia.keras` está na mesma pasta que os scripts.
+2.  Abra o arquivo `classificar_imagem.py` e **altere o valor da variável `caminho_sua_imagem`** para o caminho completo da imagem que você deseja analisar.
+    ```python
+    # altere essa linha para o caminho da imagem que você quer classificar
+    caminho_sua_imagem = "caminho/completo/para/sua/imagem.jpg" # <-- mude aqui
+    ```
+3.  Execute o script no terminal:
+    ```bash
+    python classificar_imagem.py
+    ```
 
-```bash
-jupyter notebook
-```
+### 2. Para Treinar o Modelo do Zero
 
-## Estrutura Esperada
+1.  Baixe os datasets e organize as imagens em um diretório base, com subpastas para cada classe (ex: `Fractured/`, `Not Fractured/`, `Others/`).
+2.  Abra o arquivo `tibia_and_fibula.py` e **altere o valor da variável `pasta_base_dataset`** para o caminho do diretório onde você salvou o dataset.
+    ```python
+    # Altere esta linha para o caminho do seu dataset
+    pasta_base_dataset = "caminho/do/seu/dataset" # <-- mude aqui
+    ```
+3.  Execute o script de treinamento no terminal:
+    ```bash
+    python tibia_and_fibula.py
+    ```
 
-```
-tibia_and_fibula_fracture/
-├── data/
-│   └── Fractured/ e Not Fractured/
-├── modelo_tibia.keras
-├── main.py
-├── requirements.txt
-├── README.md
-```
+## Aviso Legal
 
-## Observações
-
-- O modelo já treinado é útil para inferência imediata.
-- Se quiser treinar do zero, ajuste os scripts para carregar os dados e treinar novamente.
-- O dataset original possui imagens divididas por fraturas/not-fraturas em subpastas.
-
-## Fins Educacionais
-
-Este projeto foi desenvolvido exclusivamente para fins educacionais e de aprendizado. Não deve ser utilizado para diagnósticos médicos reais ou aplicações clínicas.
-
-## Licença
-
-Verifique os termos de uso do dataset no [Kaggle](https://www.kaggle.com/datasets/orvile/bone-fracture-dataset) e adapte sua licença de projeto conforme necessário.
+Este projeto foi desenvolvido para fins educacionais. O resultado gerado pelo modelo é uma previsão e não substitui um diagnóstico médico profissional.
