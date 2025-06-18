@@ -58,6 +58,7 @@ As dependências incluem:
     ```python
     # altere essa linha para o caminho da imagem que você quer classificar
     caminho_sua_imagem = "caminho/da/sua/imagem" # <-- mude aqui
+    # exemplo: "C:Users/seu_nome/Downloads/imagem_fratura.png"
     ```
 3.  Execute o script no terminal:
     ```bash
@@ -71,6 +72,7 @@ As dependências incluem:
     ```python
     # altere essa linha para o caminho do seu dataset
     pasta_base_dataset = "caminho/do/seu/dataset" # <-- mude aqui
+    # exemplo: "C:Users/seu_nome/Downloads/tibia-and-fibula-fracture-classifier-main"
     ```
 3.  Execute o script de treinamento no terminal:
     ```bash
