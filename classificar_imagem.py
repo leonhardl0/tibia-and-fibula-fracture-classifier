@@ -28,7 +28,7 @@ def prever_imagem(caminho_imagem, modelo, tamanho_img=(64, 64)):
 
 if __name__ == "__main__":
     # altere essa linha para o caminho da imagem que você quer classificar
-    caminho_sua_imagem = "caminho/da/sua/imagem.jpg" # <-- mude aqui
+    caminho_sua_imagem = "caminho/da/sua/imagem" # <-- mude aqui
     # exemplo: "C:/Users/seu_nome/Downloads/imagem_fratura.png"
     # nome do arquivo do modelo treinado (deve estar na mesma pasta)
     caminho_modelo = "modelo_tibia.keras"
