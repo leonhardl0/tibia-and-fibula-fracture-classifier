@@ -57,7 +57,7 @@ As dependências incluem:
 2.  Abra o arquivo `classificar_imagem.py` e **altere o valor da variável `caminho_sua_imagem`** para o caminho completo da imagem que você deseja analisar.
     ```python
     # altere essa linha para o caminho da imagem que você quer classificar
-    caminho_sua_imagem = "caminho/da/sua/imagem.jpg" # <-- mude aqui
+    caminho_sua_imagem = "caminho/da/sua/imagem" # <-- mude aqui
     ```
 3.  Execute o script no terminal:
     ```bash
