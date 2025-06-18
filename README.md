@@ -73,7 +73,7 @@ As dependências incluem:
     pasta_base_dataset = "caminho/do/seu/dataset" # <-- mude aqui
     ```
 3.  Execute o script de treinamento no terminal:
-    ```bas
+    ```bash
     python tibia_and_fibula.py
     ```
 
